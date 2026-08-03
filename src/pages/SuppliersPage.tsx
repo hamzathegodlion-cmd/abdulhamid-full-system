@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Truck, Plus } from 'lucide-react';
+import { Truck, Plus, Trash2 } from 'lucide-react';
 import { api } from '../lib/api';
 import { Supplier } from '../types';
 import { DataTable, Column } from '../components/shared/DataTable';
@@ -32,6 +32,16 @@ export const SuppliersPage: React.FC = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleDeleteSupplier = async (id: string) => {
+    setSuppliers(prev => prev.filter(s => s.id !== id));
+    try {
+      await api.deleteSupplier(id);
+    } catch (err) {
+      console.error('Failed to delete supplier', err);
+      await loadData();
+    }
+  };
 
   const handleCreateSupplier = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,6 +114,15 @@ export const SuppliersPage: React.FC = () => {
         columns={columns}
         loading={loading}
         searchPlaceholder="Search supplier by name, contact person, email..."
+        actions={(row) => (
+          <button
+            onClick={() => handleDeleteSupplier(row.id)}
+            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+            title="Delete Supplier"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
       />
 
       <Modal

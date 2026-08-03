@@ -160,6 +160,7 @@ export const api = {
   getCategories: () => request<Category[]>('/categories'),
   getUnits: () => request<Unit[]>('/categories/units'),
   createCategory: (data: { name: string; description?: string }) => request<Category>('/categories', { method: 'POST', body: JSON.stringify(data) }),
+  deleteCategory: (id: string) => request(`/categories/${id}`, { method: 'DELETE' }),
 
   // Suppliers
   getSuppliers: () => request<Supplier[]>('/suppliers'),
@@ -222,11 +223,13 @@ export const api = {
   },
 
   getSaleByInvoice: (invoiceNumber: string) => request<{ sale: Sale; items: any[] }>(`/sales/invoice/${invoiceNumber}`),
+  deleteSale: (id: string) => request(`/sales/${id}`, { method: 'DELETE' }),
 
   // Customers
   getCustomers: (search?: string) => request<Customer[]>(`/customers${search ? '?search=' + encodeURIComponent(search) : ''}`),
   createCustomer: (data: Partial<Customer>) => request<Customer>('/customers', { method: 'POST', body: JSON.stringify(data) }),
   getCustomerHistory: (id: string) => request<{ customer: Customer; sales: Sale[] }>(`/customers/${id}/history`),
+  deleteCustomer: (id: string) => request(`/customers/${id}`, { method: 'DELETE' }),
 
   // Cashiers (Manager)
   getCashiers: () => request<User[]>('/cashiers'),
@@ -236,6 +239,7 @@ export const api = {
   toggleCashierStatus: (id: string) => request<{ message: string; isActive: boolean }>(`/cashiers/${id}/toggle-status`, { method: 'PATCH' }),
   resetCashierPassword: (id: string, newPassword: string) => request(`/cashiers/${id}/reset-password`, { method: 'POST', body: JSON.stringify({ newPassword }) }),
   getCashierActivities: (id: string) => request<CashierActivity[]>(`/cashiers/${id}/activities`),
+  deleteCashier: (id: string) => request(`/cashiers/${id}`, { method: 'DELETE' }),
 
   // Reports
   getSalesReport: (from?: string, to?: string, cashierId?: string) => {

@@ -158,4 +158,27 @@ router.get('/:id/activities', authenticateToken, requireRole(UserRole.MANAGER), 
   return res.json(activities);
 });
 
+// DELETE /api/cashiers/:id
+router.delete('/:id', authenticateToken, requireRole(UserRole.MANAGER), (req: AuthenticatedRequest, res: Response) => {
+  const { id } = req.params;
+  const existing = db.getUserById(id);
+  if (!existing || existing.role !== UserRole.CASHIER) {
+    return res.status(404).json({ error: 'Cashier not found' });
+  }
+
+  db.deleteUser(id);
+
+  db.addAuditLog({
+    userId: req.user?.userId,
+    userName: req.user?.fullName,
+    action: 'DeleteCashier',
+    entity: 'User',
+    entityId: id,
+    oldValues: JSON.stringify({ username: existing.username, fullName: existing.fullName }),
+    ipAddress: req.ip
+  });
+
+  return res.json({ message: 'Cashier account deleted successfully' });
+});
+
 export default router;

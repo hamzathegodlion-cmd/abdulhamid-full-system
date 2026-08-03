@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, Printer, Search, Calendar, Filter } from 'lucide-react';
+import { Eye, Printer, Search, Calendar, Filter, Trash2 } from 'lucide-react';
 import { api } from '../lib/api';
 import { Sale, SaleItem } from '../types';
 import { DataTable, Column } from '../components/shared/DataTable';
@@ -33,6 +33,16 @@ export const SalesPage: React.FC = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleDeleteSale = async (id: string) => {
+    setSales(prev => prev.filter(s => s.id !== id));
+    try {
+      await api.deleteSale(id);
+    } catch (err) {
+      console.error('Failed to delete sale record', err);
+      await loadData();
+    }
+  };
 
   const handleInspectInvoice = async (sale: Sale) => {
     try {
@@ -103,13 +113,22 @@ export const SalesPage: React.FC = () => {
         loading={loading}
         searchPlaceholder="Search invoice #, customer name, cashier..."
         actions={(row) => (
-          <button
-            onClick={() => handleInspectInvoice(row)}
-            className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors flex items-center space-x-1 text-xs font-semibold"
-          >
-            <Eye className="w-4 h-4" />
-            <span>View Receipt</span>
-          </button>
+          <div className="flex items-center space-x-1">
+            <button
+              onClick={() => handleInspectInvoice(row)}
+              className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors flex items-center space-x-1 text-xs font-semibold"
+            >
+              <Eye className="w-4 h-4" />
+              <span>Receipt</span>
+            </button>
+            <button
+              onClick={() => handleDeleteSale(row.id)}
+              className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+              title="Delete Sale Record"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
         )}
       />
 

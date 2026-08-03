@@ -141,4 +141,21 @@ router.get('/:id', authenticateToken, (req: AuthenticatedRequest, res: Response)
   return res.json(result);
 });
 
+// DELETE /api/sales/:id
+router.delete('/:id', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const success = db.deleteSale(req.params.id);
+  if (!success) return res.status(404).json({ error: 'Sale record not found' });
+
+  db.addAuditLog({
+    userId: req.user?.userId,
+    userName: req.user?.fullName,
+    action: 'VoidDeleteSale',
+    entity: 'Sale',
+    entityId: req.params.id,
+    ipAddress: req.ip
+  });
+
+  return res.json({ message: 'Sale record deleted successfully' });
+});
+
 export default router;

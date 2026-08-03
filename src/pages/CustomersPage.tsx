@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserCheck, Plus, Phone, Mail, MapPin } from 'lucide-react';
+import { UserCheck, Plus, Phone, Mail, MapPin, Trash2 } from 'lucide-react';
 import { api } from '../lib/api';
 import { Customer } from '../types';
 import { DataTable, Column } from '../components/shared/DataTable';
@@ -32,6 +32,16 @@ export const CustomersPage: React.FC = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleDeleteCustomer = async (id: string) => {
+    setCustomers(prev => prev.filter(c => c.id !== id));
+    try {
+      await api.deleteCustomer(id);
+    } catch (err) {
+      console.error('Failed to delete customer', err);
+      await loadData();
+    }
+  };
 
   const handleCreateCustomer = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,6 +117,15 @@ export const CustomersPage: React.FC = () => {
         columns={columns}
         loading={loading}
         searchPlaceholder="Search customer by name, phone, email..."
+        actions={(row) => (
+          <button
+            onClick={() => handleDeleteCustomer(row.id)}
+            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+            title="Delete Customer"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
       />
 
       <Modal

@@ -557,6 +557,38 @@ class Database {
     return cust;
   }
 
+  public updateCustomer(id: string, updates: Partial<Customer>): Customer | null {
+    const idx = this.data.customers.findIndex(c => c.id === id);
+    if (idx === -1) return null;
+    this.data.customers[idx] = { ...this.data.customers[idx], ...updates, updatedAt: new Date().toISOString() };
+    this.save();
+    return this.data.customers[idx];
+  }
+
+  public deleteCustomer(id: string): boolean {
+    const idx = this.data.customers.findIndex(c => c.id === id);
+    if (idx === -1) return false;
+    this.data.customers[idx].isDeleted = true;
+    this.save();
+    return true;
+  }
+
+  public deleteUser(id: string): boolean {
+    const idx = this.data.users.findIndex(u => u.id === id);
+    if (idx === -1) return false;
+    this.data.users[idx].isDeleted = true;
+    this.save();
+    return true;
+  }
+
+  public deleteSale(id: string): boolean {
+    const idx = this.data.sales.findIndex(s => s.id === id);
+    if (idx === -1) return false;
+    this.data.sales[idx].isDeleted = true;
+    this.save();
+    return true;
+  }
+
   // Sales Engine with Transaction safety
   public getSales(): Sale[] {
     return this.data.sales.filter(s => !s.isDeleted);

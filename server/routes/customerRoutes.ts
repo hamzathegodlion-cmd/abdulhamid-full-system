@@ -57,4 +57,18 @@ router.post('/', authenticateToken, (req: AuthenticatedRequest, res: Response) =
   return res.status(201).json(created);
 });
 
+// PUT /api/customers/:id
+router.put('/:id', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const updated = db.updateCustomer(req.params.id, req.body);
+  if (!updated) return res.status(404).json({ error: 'Customer not found' });
+  return res.json(updated);
+});
+
+// DELETE /api/customers/:id
+router.delete('/:id', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const success = db.deleteCustomer(req.params.id);
+  if (!success) return res.status(404).json({ error: 'Customer not found' });
+  return res.json({ message: 'Customer deleted successfully' });
+});
+
 export default router;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, Shield, KeyRound, Power, Activity, Lock, User as UserIcon } from 'lucide-react';
+import { UserPlus, Shield, KeyRound, Power, Activity, Lock, User as UserIcon, Trash2 } from 'lucide-react';
 import { api } from '../lib/api';
 import { User, CashierActivity } from '../types';
 import { DataTable, Column } from '../components/shared/DataTable';
@@ -71,6 +71,16 @@ export const CashiersPage: React.FC = () => {
       await loadData();
     } catch (err: any) {
       alert(err.message || 'Failed to toggle status');
+    }
+  };
+
+  const handleDeleteCashier = async (id: string) => {
+    setCashiers(prev => prev.filter(c => c.id !== id));
+    try {
+      await api.deleteCashier(id);
+    } catch (err: any) {
+      console.error('Failed to delete cashier', err);
+      await loadData();
     }
   };
 
@@ -175,10 +185,17 @@ export const CashiersPage: React.FC = () => {
             </button>
             <button
               onClick={() => handleToggleStatus(row.id)}
-              className={`p-1.5 rounded-lg transition-colors ${row.isActive ? 'text-emerald-600 hover:text-rose-600' : 'text-slate-400 hover:text-emerald-600'}`}
+              className={`p-1.5 rounded-lg transition-colors ${row.isActive ? 'text-emerald-600 hover:text-amber-600' : 'text-slate-400 hover:text-emerald-600'}`}
               title={row.isActive ? 'Deactivate Cashier' : 'Activate Cashier'}
             >
               <Power className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleDeleteCashier(row.id)}
+              className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+              title="Delete Cashier"
+            >
+              <Trash2 className="w-4 h-4" />
             </button>
           </div>
         )}

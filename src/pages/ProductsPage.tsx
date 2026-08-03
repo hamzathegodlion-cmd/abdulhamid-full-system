@@ -175,12 +175,14 @@ export const ProductsPage: React.FC = () => {
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!window.confirm(`Are you sure you want to delete product "${name}"?`)) return;
+    // Automatically update UI state instantly
+    setProducts(prev => prev.filter(p => p.id !== id));
     try {
       await api.deleteProduct(id);
-      await loadData();
     } catch (err: any) {
-      alert(err.message || 'Failed to delete product');
+      console.error('Failed to delete product:', err);
+      // Rollback on failure
+      await loadData();
     }
   };
 
