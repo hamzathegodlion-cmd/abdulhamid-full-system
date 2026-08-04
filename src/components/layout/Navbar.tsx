@@ -45,8 +45,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Brand & Store Logo */}
         <div className="flex items-center space-x-2.5">
-          <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center font-bold text-black text-xl shadow-md shadow-orange-500/20 shrink-0">
-            S
+          <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0 border border-orange-500/40 bg-zinc-900">
+            <img src="/src/assets/images/smartpos_logo_icon_1785821871822.jpg" alt="SmartPOS Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
           <div>
             <h1 className="font-bold text-white text-base leading-tight tracking-tight">SmartPOS</h1>

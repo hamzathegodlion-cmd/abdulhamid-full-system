@@ -34,8 +34,8 @@ export const LoginPage: React.FC = () => {
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-xl shadow-blue-500/20 mb-4">
-              <Store className="w-7 h-7" />
+            <div className="w-16 h-16 mx-auto rounded-2xl overflow-hidden shadow-xl shadow-orange-500/20 border border-orange-500/30 mb-4 bg-zinc-900 flex items-center justify-center">
+              <img src="/src/assets/images/smartpos_logo_icon_1785821871822.jpg" alt="SmartPOS Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             </div>
             <h1 className="text-2xl font-black tracking-tight text-white">SmartPOS System</h1>
             <p className="text-xs text-slate-400 mt-1 font-medium">Retail Point of Sale & Inventory Engine</p>

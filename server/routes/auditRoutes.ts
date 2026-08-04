@@ -16,4 +16,18 @@ router.get('/activities', authenticateToken, requireRole(UserRole.MANAGER), (req
   return res.json(db.getCashierActivities(userId as string));
 });
 
+// POST /api/audit-logs/reset-system (Manager only)
+router.post('/reset-system', authenticateToken, requireRole(UserRole.MANAGER), (req: AuthenticatedRequest, res: Response) => {
+  db.purgeData();
+  db.addAuditLog({
+    userId: req.user?.userId,
+    userName: req.user?.fullName,
+    action: 'SystemDataPurged',
+    entity: 'System',
+    entityId: 'sys-reset',
+    ipAddress: req.ip
+  });
+  return res.json({ message: 'System transactional data reset to clean state successfully.' });
+});
+
 export default router;

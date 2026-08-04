@@ -260,5 +260,6 @@ export const api = {
 
   // Audit Logs
   getAuditLogs: () => request<AuditLog[]>('/audit/logs'),
-  getActivities: (userId?: string) => request<CashierActivity[]>(`/audit/activities${userId ? '?userId=' + userId : ''}`)
+  getActivities: (userId?: string) => request<CashierActivity[]>(`/audit/activities${userId ? '?userId=' + userId : ''}`),
+  resetSystemData: () => request<{ message: string }>('/audit/reset-system', { method: 'POST' })
 };

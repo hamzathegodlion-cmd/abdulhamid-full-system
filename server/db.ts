@@ -376,20 +376,26 @@ class Database {
       categories,
       units,
       suppliers,
-      products,
-      stockMovements: sampleMovements,
-      customers,
-      sales: sampleSales,
-      saleItems: sampleSaleItems,
-      cashierActivities: [
-        { id: 'act-001', userId: cashierUser.id, userName: cashierUser.fullName, action: 'Login', details: 'Successful Cashier Login', ipAddress: '127.0.0.1', createdAt: yesterday },
-        { id: 'act-002', userId: cashierUser.id, userName: cashierUser.fullName, action: 'SaleCreated', details: 'Completed Sale INV-20260802-1430-9102', ipAddress: '127.0.0.1', createdAt: yesterday }
-      ],
-      auditLogs: [
-        { id: 'aud-001', userId: adminUser.id, userName: adminUser.fullName, action: 'SystemInitialized', entity: 'System', entityId: 'sys-1', newValues: JSON.stringify({ version: '1.0.0' }), ipAddress: '127.0.0.1', createdAt: isoNow }
-      ]
+      products: [],
+      stockMovements: [],
+      customers: [],
+      sales: [],
+      saleItems: [],
+      cashierActivities: [],
+      auditLogs: []
     };
 
+    this.save();
+  }
+
+  public purgeData() {
+    this.data.sales = [];
+    this.data.saleItems = [];
+    this.data.stockMovements = [];
+    this.data.products = [];
+    this.data.customers = [];
+    this.data.cashierActivities = [];
+    this.data.auditLogs = [];
     this.save();
   }
 
