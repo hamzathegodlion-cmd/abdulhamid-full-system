@@ -15,10 +15,14 @@ import categoryRoutes from './server/routes/categoryRoutes';
 import auditRoutes from './server/routes/auditRoutes';
 import userRoutes from './server/routes/userRoutes';
 import { errorHandler } from './server/middleware';
+import { connectMongoDB } from './server/mongodb';
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Initialize MongoDB Connection (if MONGODB_URI is provided in environment)
+  await connectMongoDB();
 
   // JSON Body Parser
   app.use(express.json({ limit: '10mb' }));
